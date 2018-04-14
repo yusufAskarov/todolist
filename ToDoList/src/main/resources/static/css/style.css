@@ -1,0 +1,12 @@
+.vertical-offset-100 {
+    margin-top: 100px;
+}
+.alert-danger {
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+a.pull-right {
+    font-size: 16px;
+    color: rgb(52, 101, 52);
+    text-decoration: underline;
+}

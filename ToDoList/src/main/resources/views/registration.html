@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>        
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js" ></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.standalone.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script>
+            $(document).ready(function () {
+                $('.datepicker').datepicker();
+            });
+        </script>
+    </head>
+    <body> 
+        
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-lg-6 col-md-offset-3">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <form  th:action="@{/registration}" th:object="${user}" method="POST">  
+                            <div class="form-group">
+                                <label th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"
+								class="validation-message"></label><br/>
+                                <label>Имя пользователя</label>
+                                <input class="form-control" data-validation="required" name="userName" th:field="*{userName}" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+								class="validation-message"></label><br/>
+                                <label>Пароль</label>
+                                <input class="form-control" data-validation="required" name="password" th:field="*{password}" type="password" />
+                            </div>
+                            <div class="form-group">
+                                <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+								class="validation-message"></label><br/>
+                                <label>Email</label>
+                                <input class="form-control" data-validation="required" name="email" th:field="*{email}" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"
+								class="validation-message"></label><br/>
+                                <label>Имя</label>
+                                <input class="form-control" data-validation="required" name="firstName" th:field="*{firstName}" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+								class="validation-message"></label><br/>
+                                <label>Фамилия</label>
+                                <input class="form-control" data-validation="required" name="lastName" th:field="*{lastName}" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label>Возраст</label>
+                                <input class="form-control" data-validation="required" name="age" th:field="*{age}" type="number" />
+                            </div>
+                            <div class="form-group">
+                                <label>Пол</label>
+                                Муж <input  name="gender" value="Мужской" th:field="*{gender}" type="radio">
+                                Жен <input name="gender" value = "Женский" type="radio"/>
+                            </div>
+                            <div class="form-group">
+                                <label th:if="${#fields.hasErrors('birthDay')}" th:errors="*{birthDay}"
+								class="validation-message"></label><br/>
+                                <label>Дата рождения</label>
+                                <input class="form-control" name="bithDay" type="text" th:field="*{birthDay}" />
+<!--                                <div class="input-group date" data-provide="datepicker">                    
+                                    
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>-->
+                            </div>
+                            <div class="form-group">
+                                <label>Роль</label>
+                                <select class="form-control" name ="role" th:field="*{userRole}">
+                                    <option 
+                                        th:each="role: ${roles}"
+                                        th:value="${role.roleId}"
+                                        th:text="${role.roleName}" ></option>
+                                </select>
+                            </div>
+                            <input type="submit" name="Зарегистрироваться"/>
+                        </form>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </body>
+</html>

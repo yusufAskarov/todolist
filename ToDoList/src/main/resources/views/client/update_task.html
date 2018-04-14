@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Редактирование задачи</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <form method="POST" th:action="@{/user/update}" th:object="${updTask}">
+            <table>
+                <tr>
+                    <td>Фактическая дата завершения</td>
+                    <td><input type="text" name="factFinishDate"th:field="*{factFinishDate}"></td>
+                    <td><label th:if="${#fields.hasErrors('factFinishDate')}" th:errors="*{factFinishDate}"
+								class="validation-message" /></td>
+                </tr>
+                <tr>
+                    <td>Примечание</td>
+                    <td><input type="textarea" name="note"th:field="*{note}"></td>
+                    <td><label th:if="${#fields.hasErrors('note')}" th:errors="*{note}"
+								class="validation-message" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <input type="submit" value="Завершить"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

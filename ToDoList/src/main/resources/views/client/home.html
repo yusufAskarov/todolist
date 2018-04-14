@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/js/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                if ($("#tasksTab tr").length < 2) {
+
+                    $("#divEmpty").show();
+                }
+                $("a").click(function (event) {
+                    var id = event.target.id;
+                    if (id.startsWith("del_")) {
+
+                        removeTask(id);
+                    }
+                });
+            });
+            function removeTask(id) {
+                var taskId = id.split("_")[1];
+                var $data = "taskId=" + taskId;
+                $.ajax({
+                    type: "GET",
+                    url: "/user/remove-task",
+                    data: $data,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.taskStatus.statusCode === "deleted") {
+                            $("#"+id).closest("tr").remove();
+                            var taskRowCount = $("#tasksTab tr").length;
+                            if (taskRowCount < 2) {
+                                $("#divEmpty").show();
+                                $("#divTasks").hide();
+                            } else {
+                                $('#tasksTab tr').each(function (i) {
+                                    $('td', this).each(function (j) {
+                                        if (j === 0) {
+                                            $(this).html(i);
+                                        }
+                                    });
+                                });
+
+                            }
+
+                        }
+                    },
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+            }
+
+        </script>
+    </head>
+    <body>
+        <a href="/logout"> logout</a><br/>
+        <a href="/welcome"> Назад</a><br/>
+        <a href="/user/task-creation">Создать задачу</a><br/>
+        <!--${not #lists.isEmpty(tblUserList)}-->
+        <div id="divEmpty" style="display:none">
+            Список задач пуст
+        </div>
+        <br>
+        <br>
+        <br>
+        <div th:if="${not #lists.isEmpty(tasks)}" id="divTasks">
+            <table border="1" id="tasksTab">
+                <tr>
+                    <th>
+                        No
+                    </th>
+                    <th>
+                        Задача
+                    </th>
+                    <th>
+                        Описание
+                    </th>
+                    <th>
+                        статус
+                    </th>
+                    <th>
+                        Дата создания
+                    </th>
+                    <th>
+                        Планируемая дата завершения
+                    </th>
+                    <th>
+                        Фактическая дата завершения
+                    </th>
+                    <th>
+                        Примечание
+                    </th>
+                    <th>
+                        Действие
+                    </th>
+
+                </tr>
+                <th:block th:each="task,iter : ${tasks}">
+                    <tr th:id='${iter.index+1}'>
+                        <td th:text="${iter.index+1}" id="taskIter">
+
+                        </td>
+                        <td th:text="${task.taskName}">
+                        </td>
+                        <td th:text="${task.taskDescription}">
+                        </td>
+                        <td th:text="${task.taskStatus.statusName}">
+                        </td>
+                        <td th:text="${#dates.format(task.createdAt, 'dd.MM.yyyy')}">
+                        </td>
+                        <td th:text="${#dates.format(task.plannedFinishDate, 'dd.MM.yyyy')}">
+                        </td>
+                        <td th:text="${#dates.format(task.factFinishDate, 'dd.MM.yyyy')}">
+                        </td>
+                        <td th:text="${task.note}">
+                        </td>
+                        <td >
+                            <a th:href="@{/user/update(taskId=${task.taskId})}" th:if="${task.taskStatus.statusCode == 'inprocess'}">Выполнить</a>
+                            <a href="#" th:id="'del_'+${task.taskId}">Удалить</a>
+                            <!--<a th:href="@{/user/update}">Выполнить</a>-->
+                        </td>
+                    </tr>
+                </th:block>
+            </table>
+        </div>
+    </body>
+</html>
