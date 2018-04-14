@@ -1,0 +1,7 @@
+Используемые технологи:
+Spring Boot
+CRUD модели с использованием ORM (JPA/Hibernate)
+Rest API
+Spring securiry 
+Логирование Log4g
+Управление миграциями БД flyway
